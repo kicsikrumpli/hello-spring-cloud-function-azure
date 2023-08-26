@@ -28,11 +28,6 @@ public class Main {
         };
     }
 
-    @Bean
-    public Function<String, String> reverse() {
-        return payload -> new StringBuilder(payload).reverse().toString();
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
