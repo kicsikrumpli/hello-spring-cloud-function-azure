@@ -39,12 +39,10 @@
             <!-- artifactId>spring-cloud-function-adapter-azure-web</artifactId -->
         </dependency>
 
-        <!-- for http triggered azure function: -->
-        <!-- dependency>
-            <groupId>org.springframework.cloud</groupId>
-
-        </dependency -->
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

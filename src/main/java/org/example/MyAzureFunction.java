@@ -1,8 +1,6 @@
 package org.example;
 
-import com.microsoft.azure.functions.ExecutionContext;
-import com.microsoft.azure.functions.HttpMethod;
-import com.microsoft.azure.functions.HttpRequestMessage;
+import com.microsoft.azure.functions.*;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
@@ -26,7 +24,57 @@ public class MyAzureFunction {
     @Autowired
     private FunctionCatalog functionCatalog;
 
-    @FunctionName("spring")
+    @FunctionName("name")
+    public HttpResponseMessage upperUser(
+            @HttpTrigger(
+                    name = "req",
+                    authLevel = AuthorizationLevel.ANONYMOUS,
+                    methods = {HttpMethod.GET, HttpMethod.POST}
+            ) HttpRequestMessage<String> request,
+            ExecutionContext context
+    ) {
+        String name = request.getBody();
+
+        context.getLogger().info("Received request with " + name);
+
+        User user = User.builder()
+                .name(name.toUpperCase())
+                .salutation("MR")
+                .build();
+
+        return request.createResponseBuilder(HttpStatus.OK)
+                .body(user)
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    @FunctionName("user")
+    public HttpResponseMessage upperUser2(
+            @HttpTrigger(
+                    name = "req",
+                    authLevel = AuthorizationLevel.ANONYMOUS,
+                    methods = {HttpMethod.GET, HttpMethod.POST}
+            ) HttpRequestMessage<User> request,
+            ExecutionContext context
+    ) {
+        context.getLogger().info("=^.^=");
+
+        User user = request.getBody();
+
+        context.getLogger().info("Received request with " + user);
+
+        User upperUser = User.builder()
+                .name(user.getName().toUpperCase())
+                .salutation(user.getSalutation().toUpperCase())
+                .build();
+
+        return request.createResponseBuilder(HttpStatus.OK)
+                .body(upperUser)
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    @FunctionName("uppercase")
     public String anyNameIsOk(
             @HttpTrigger(
                     name = "req",
