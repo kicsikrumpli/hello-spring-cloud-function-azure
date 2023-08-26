@@ -3,6 +3,9 @@ Spring Cloud Azure Functions Skeleton
 
 ## Quickstart
 deploy: 
+```bash
+./mvnw azure-functions:run
+```
 
 send request:
 - POST raw string request body, application/text response
@@ -52,3 +55,4 @@ send request:
 ## Sources
 1. [Spring Initializr](https://start.spring.io) + Cloud Function Dependency
 2. [Spring Docs - Azure adapter](https://docs.spring.io/spring-cloud-function/docs/current/reference/html/spring-cloud-function.html#_microsoft_azure_functions)
+3. [Spring Cloud Function Examples](https://github.com/spring-cloud/spring-cloud-function/tree/main/spring-cloud-function-samples)
