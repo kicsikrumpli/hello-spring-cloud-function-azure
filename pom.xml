@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>org.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>demo</name>
+    <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <start-class>org.example.Main</start-class>
+        <hostJson>${project.basedir}/src/main/resources/host.json</hostJson>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-function-context</artifactId>
+        </dependency>
+
+        <!-- Azure Adapter -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-function-adapter-azure</artifactId>
+            <!-- artifactId>spring-cloud-function-adapter-azure-web</artifactId -->
+        </dependency>
+
+        <!-- for http triggered azure function: -->
+        <!-- dependency>
+            <groupId>org.springframework.cloud</groupId>
+
+        </dependency -->
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-functions-maven-plugin</artifactId>
+                <version>1.22.0</version>
+
+                <configuration>
+                    <appName>arbitrary-app-name</appName>
+                    <resourceGroup>YOUR-AZURE-FUNCTION-RESOURCE-GROUP</resourceGroup>
+                    <region>YOUR-AZURE-FUNCTION-APP-REGION</region>
+                    <appServicePlanName>YOUR-AZURE-FUNCTION-APP-SERVICE-PLANE-NAME</appServicePlanName>
+                    <pricingTier>YOUR-AZURE-FUNCTION-PRICING-TIER</pricingTier>
+
+                    <hostJson>${project.basedir}/src/main/resources/host.json</hostJson>
+
+                    <runtime>
+                        <os>linux</os>
+                        <javaVersion>11</javaVersion>
+                    </runtime>
+
+                    <appSettings>
+                        <property>
+                            <name>FUNCTIONS_EXTENSION_VERSION</name>
+                            <value>~4</value>
+                        </property>
+                    </appSettings>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>package-functions</id>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <dependencies>
+                    <!-- Spring Boot packaging is incompatible with Azure Function packaging -->
+                    <dependency>
+                        <groupId>org.springframework.boot.experimental</groupId>
+                        <artifactId>spring-boot-thin-layout</artifactId>
+                        <!-- does not compile without explicit version-->
+                        <version>1.0.30.RELEASE</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
